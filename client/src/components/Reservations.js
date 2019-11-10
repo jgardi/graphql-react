@@ -75,34 +75,32 @@ const Reservations = props => {
         )}
       </Grid>
 
-      {!searchId && (
-        <Grid item xs={12} lg={8}>
+      <Grid item xs={12} lg={8}>
+        <Paper>
+          <Typography className={classes.title}>
+            All Reservations
+          </Typography>
           <Paper>
-            <Typography className={classes.title}>
-              Reservations
-            </Typography>
-            <Paper>
-              <Table size="small" aria-label="Reservations">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Reservation Id</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {reservations &&
-                    reservations.map(row => (
-                      <TableRow key={row.name}>
-                        <TableCell component="th" scope="row">
-                          {row._id}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </Paper>
+            <Table size="small" aria-label="Reservations">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Reservation Id</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {reservations &&
+                  reservations.map(row => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row._id}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
           </Paper>
-        </Grid>
-      )}
+        </Paper>
+      </Grid>
     </Grid>
   )
 }
