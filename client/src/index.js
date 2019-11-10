@@ -12,8 +12,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createPersistedQueryLink } from 'apollo-link-persisted-queries'
 import { createHttpLink } from 'apollo-link-http'
 
-import _ from 'lodash'
-
 import App from './app'
 
 const httpLink = createPersistedQueryLink().concat(
