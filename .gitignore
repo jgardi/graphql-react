@@ -1,0 +1,9 @@
+logfile
+client/.env
+client/build/*
+server/data
+server/data/*
+server/.env
+client/data/
+server/node_modules/
+client/node_modules/
