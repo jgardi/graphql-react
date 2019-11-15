@@ -55,7 +55,6 @@ const AddReservation = () => {
         })
 
       if (networkError) {
-        console.log('network', networkError)
         setError('Network server error', networkError)
         setOpen(true)
       }
