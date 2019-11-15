@@ -1,64 +1,35 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
 
-import { getMainDefinition } from 'apollo-utilities'
-import { ApolloLink, split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
 
-import { createPersistedQueryLink } from 'apollo-link-persisted-queries'
-import { createHttpLink } from 'apollo-link-http'
+import { ApolloLink } from 'apollo-client-preset'
+import App from './app/index'
 
-import App from './app'
+const GRAPHCMS_API = 'https://hilton-server.herokuapp.com/graphql'
 
-const httpLink = createPersistedQueryLink().concat(
-  createHttpLink({ uri: process.env.REACT_APP_URI }),
-)
-
-const token = localStorage.getItem('token')
-const wsLink = new WebSocketLink({
-  uri: process.env.REACT_APP_WSURI,
-  options: {
-    reconnect: true,
-    connectionParams: {
-      authToken: token,
-    },
-  },
+const httpLink = new HttpLink({
+  uri: GRAPHCMS_API,
 })
 
-const terminatingLink = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return (
-      kind === 'OperationDefinition' && operation === 'subscription'
-    )
-  },
-  wsLink,
-  httpLink,
-)
+const middlewareAuthLink = new ApolloLink((operation, forward) => {
+  const token = ''
 
-const authLink = new ApolloLink((operation, forward) => {
-  operation.setContext(({ headers = {} }) => {
-    if (token) {
-      headers = { ...headers, authorization: token }
-    }
-
-    return { headers }
+  const authorizationHeader = token ? `Bearer ${token}` : null
+  operation.setContext({
+    headers: {
+      authorization: authorizationHeader,
+    },
   })
-
   return forward(operation)
 })
 
-const link = ApolloLink.from([authLink, terminatingLink])
-
-const cache = new InMemoryCache()
-
 const client = new ApolloClient({
-  link,
-  cache,
+  link: middlewareAuthLink.concat(httpLink),
+  cache: new InMemoryCache(),
 })
 
 ReactDOM.render(

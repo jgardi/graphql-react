@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import { useQuery } from 'react-apollo'
+import { useQuery } from '@apollo/react-hooks'
 import {
   Grid,
   CircularProgress,

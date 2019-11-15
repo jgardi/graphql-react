@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Box,
   Grid,
@@ -12,25 +12,37 @@ import {
   TableCell,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { useQuery } from 'react-apollo'
+import { useQuery } from '@apollo/react-hooks'
 
+import Context from '../context'
 import AddReservation from './AddReservation'
 import Reservation from './Reservation'
 import Search from './Search'
 
 import { GET_RESERVATIONS } from '../gql/queries'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   title: {
     padding: '1rem',
     fontWeight: '700',
   },
 }))
 
-const Reservations = props => {
+const Reservations = () => {
   const classes = useStyles()
   const [searchId, setSearchId] = useState()
-  const { loading, error, data } = useQuery(GET_RESERVATIONS)
+
+  const { state, dispatch } = useContext(Context)
+  const { data, loading, error } = useQuery(GET_RESERVATIONS)
+
+  useEffect(() => {
+    if (data && data.reservations) {
+      dispatch({
+        type: 'ADD_RESERVATION',
+        payload: data.reservations,
+      })
+    }
+  }, [data])
 
   if (loading)
     return (
@@ -66,7 +78,7 @@ const Reservations = props => {
         </Grid>
       )}
       <Grid item xs={12} lg={8}>
-        {reservations.length <= 0 && (
+        {state && state.reservations.length <= 0 && (
           <Paper>
             <Typography className={classes.title}>
               There are no existing reservations
@@ -88,8 +100,9 @@ const Reservations = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {reservations &&
-                  reservations.map(row => (
+                {state &&
+                  state.reservations &&
+                  state.reservations.map(row => (
                     <TableRow key={row.name}>
                       <TableCell component="th" scope="row">
                         {row._id}

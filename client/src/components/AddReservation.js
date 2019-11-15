@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Dialog,
   Button,
@@ -9,27 +9,12 @@ import {
   TextField,
   Box,
 } from '@material-ui/core'
-import { useMutation } from 'react-apollo'
 import moment from 'moment'
-
 import { CREATE_RESERVATION } from '../gql/mutations'
-import { GET_RESERVATIONS } from '../gql/queries'
-
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles(theme => ({
-  textField: {
-    //marginRight: '1rem',
-    margin: '1rem',
-    width: '200px',
-  },
-  button: {
-    fontSize: '1rem',
-  },
-}))
+import Context from '../context'
+import { useMutation } from '@apollo/react-hooks'
 
 const AddReservation = () => {
-  const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [error, setError] = useState()
   const [formValues, setFormValues] = useState({
@@ -38,13 +23,9 @@ const AddReservation = () => {
     arrivalDate: moment(new Date()).format('MM DD YYYY'),
     departureDate: '',
   })
-  const [createReservation] = useMutation(CREATE_RESERVATION, {
-    refetchQueries: [
-      {
-        query: GET_RESERVATIONS,
-      },
-    ],
-  })
+
+  const { dispatch } = useContext(Context)
+  const [createReservation] = useMutation(CREATE_RESERVATION)
 
   const updateFormField = e => {
     setFormValues({
@@ -60,8 +41,12 @@ const AddReservation = () => {
         variables: { reservationInput: formValues },
       })
       setOpen(false)
+
+      dispatch({
+        type: 'ADD_RESERVATION',
+        payload: [data.createReservation],
+      })
     } catch (errors) {
-      console.log(errors)
       const { graphQLErrors, networkError } = errors
       if (graphQLErrors)
         graphQLErrors.map(({ message, locations, path }) => {
@@ -83,16 +68,13 @@ const AddReservation = () => {
 
   return (
     <div>
-      <Box display="flex" justifyContent="flex-end" m={1} p={1}>
-        <Button
-          className={classes.button}
-          color="primary"
-          variant="contained"
-          onClick={() => setOpen(!open)}
-        >
-          Add Reservation
-        </Button>
-      </Box>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => setOpen(!open)}
+      >
+        Add Reservation
+      </Button>
       <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogTitle
           id="customized-dialog-title"
@@ -107,7 +89,6 @@ const AddReservation = () => {
               <TextField
                 name="guestName"
                 label="Guest Name"
-                className={classes.textField}
                 InputLabelProps={{ shrink: true, required: true }}
                 type="textarea"
                 defaultValue={''}
@@ -116,7 +97,6 @@ const AddReservation = () => {
               <TextField
                 name="hotelName"
                 label="Hotel Name"
-                className={classes.textField}
                 InputLabelProps={{ shrink: true, required: true }}
                 type="textarea"
                 defaultValue={''}
@@ -125,7 +105,6 @@ const AddReservation = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                className={classes.textField}
                 name="arrivalDate"
                 label="Arrival Date"
                 InputLabelProps={{ shrink: true, required: true }}
@@ -134,7 +113,6 @@ const AddReservation = () => {
                 onChange={e => updateFormField(e)}
               />
               <TextField
-                className={classes.textField}
                 name="departureDate"
                 label="Departure Date"
                 InputLabelProps={{ shrink: true, required: true }}
