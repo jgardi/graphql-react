@@ -7,9 +7,6 @@ export default () => (
   <Grid container justify="center" alignItems="center">
     <SmallText>
       Built using React, GraphQL, material UI Components and Express.
-      <Link href="https://github.com/jgardi/graphql-react">
-        {'  '}See code on Github
-      </Link>
     </SmallText>
   </Grid>
 )

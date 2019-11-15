@@ -84,7 +84,7 @@ const AddReservation = () => {
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               {error && <div>{error}</div>}
               <TextField
                 name="guestName"
@@ -94,6 +94,8 @@ const AddReservation = () => {
                 defaultValue={''}
                 onChange={e => updateFormField(e)}
               />
+            </Grid>
+            <Grid item xs={6}>
               <TextField
                 name="hotelName"
                 label="Hotel Name"
@@ -103,7 +105,7 @@ const AddReservation = () => {
                 onChange={e => updateFormField(e)}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 name="arrivalDate"
                 label="Arrival Date"
@@ -112,6 +114,8 @@ const AddReservation = () => {
                 defaultValue={formValues.arrivalDate}
                 onChange={e => updateFormField(e)}
               />
+            </Grid>
+            <Grid item xs={6}>
               <TextField
                 name="departureDate"
                 label="Departure Date"

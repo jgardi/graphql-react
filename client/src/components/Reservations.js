@@ -103,7 +103,7 @@ const Reservations = () => {
                 {state &&
                   state.reservations &&
                   state.reservations.map(row => (
-                    <TableRow key={row.name}>
+                    <TableRow key={row._id}>
                       <TableCell component="th" scope="row">
                         {row._id}
                       </TableCell>
