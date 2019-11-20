@@ -1,6 +1,7 @@
-import { gql } from "apollo-server-express";
+import { gql } from 'apollo-server-express'
 
-import reservationSchema from "./reservation";
+import reservationSchema from './reservation'
+import flashcardSchema from './flashcard'
 
 const linkSchema = gql`
   scalar Date
@@ -11,6 +12,6 @@ const linkSchema = gql`
   type Mutation {
     _: Boolean
   }
-`;
+`
 
-export default [linkSchema, reservationSchema];
+export default [linkSchema, reservationSchema, flashcardSchema]

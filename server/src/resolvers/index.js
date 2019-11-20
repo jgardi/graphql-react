@@ -1,6 +1,11 @@
-import reservationResolvers from "./reservation";
-import { GraphQLDateTime } from "graphql-iso-date";
+import reservationResolvers from './reservation'
+import flashcardResolvers from './flashcard'
+import { GraphQLDateTime } from 'graphql-iso-date'
 
-const customScalarResolver = { Date: GraphQLDateTime };
+const customScalarResolver = { Date: GraphQLDateTime }
 
-export default [customScalarResolver, reservationResolvers];
+export default [
+  customScalarResolver,
+  flashcardResolvers,
+  reservationResolvers,
+]

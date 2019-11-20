@@ -1,20 +1,22 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-import Reservation from "./reservation";
+import Reservation from './reservation'
+import Flashcard from './flashcard'
 
 const connectDb = () => {
   if (process.env.DATABASE_URL) {
-    console.log("conected to db", process.env.DATABASE_URL);
+    console.log('conected to db', process.env.DATABASE_URL)
     return mongoose.connect(process.env.DATABASE_URL, {
-      useNewUrlParser: true
-    });
+      useNewUrlParser: true,
+    })
   }
-};
+}
 
 const models = {
-  Reservation
-};
+  Reservation,
+  Flashcard,
+}
 
-export { connectDb };
+export { connectDb }
 
-export default models;
+export default models
