@@ -12,7 +12,7 @@ const flashcardSchema = new mongoose.Schema(
       default: new Date().toISOString(),
     },
   },
-  { collection: 'reservation' },
+  { collection: 'flashcard' },
 )
 
 const Flashcard = mongoose.model('Flashcard', flashcardSchema)
