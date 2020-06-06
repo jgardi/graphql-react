@@ -32,7 +32,7 @@
     "@google/maps": "^0.5.5",
     "@sendgrid/mail": "^6.3.1",
     "apollo-server": "^2.2.3",
-    "apollo-server-express": "^2.2.3",
+    "apollo-server-express": "^2.14.2",
     "apollo-server-memcached": "0.1.0-rc.10",
     "aws-sdk": "^2.546.0",
     "bcrypt": "^3.0.2",
